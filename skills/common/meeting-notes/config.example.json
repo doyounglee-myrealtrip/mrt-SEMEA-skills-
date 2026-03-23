@@ -9,10 +9,7 @@
   },
 
   "slack": {
-    "client_id": "여기에_Slack_앱_Client_ID",
-    "client_secret": "여기에_Slack_앱_Client_Secret",
-    "bot_token": "",
-    "my_user_id": ""
+    "_comment": "Slack은 MCP 플러그인(slack@claude-plugins-official)으로 연동됩니다. 별도 설정 불필요."
   },
 
   "caret": {

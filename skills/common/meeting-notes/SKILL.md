@@ -68,15 +68,7 @@ h2. 액션 아이템
 
 ## 3단계: Slack DM 전송
 
-Confluence 페이지가 생성되면 `scripts/send_slack_dm.py`를 실행한다.
-
-```bash
-python3 scripts/send_slack_dm.py \
-  --title "<회의 제목>" \
-  --url "<Confluence 페이지 URL>" \
-  --summary "<핵심 내용 3줄 요약>" \
-  --actions "<액션 아이템 목록>"
-```
+Confluence 페이지가 생성되면 Slack MCP를 사용해 나(doyoung)에게 DM을 보낸다.
 
 ### Slack 메시지 형식
 
