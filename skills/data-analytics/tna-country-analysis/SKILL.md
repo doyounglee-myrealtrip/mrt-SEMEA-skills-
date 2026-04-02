@@ -265,18 +265,44 @@ GROUP BY 1, 2, 3, 4 HAVING order_cnt >= 5 ORDER BY cancelled_gmv DESC LIMIT 20
 
 #### 3-1. 광고비 × 유입 효율
 
+> **중요: `mkt_dashboard_raw_data`의 `country_en` 값과 FP&A 테이블의 `COUNTRY_NM` 값이 다를 수 있다.** 반드시 아래 순서를 따른다.
+
+**Step 1: 해당 국가의 `country_en` 값 확인**
 ```sql
--- business.mkt_dashboard_raw_data에서 채널별 광고비/GMV/ROAS
-SELECT channel,
+SELECT DISTINCT country_en FROM mrtdata.business.mkt_dashboard_raw_data
+WHERE biz_type = 'T&A' AND LOWER(country_en) LIKE LOWER('%{COUNTRY}%') LIMIT 5
+```
+
+**Step 2: country_en으로 결과가 없으면, city_en으로 fallback**
+```sql
+-- Phase 0에서 식별한 Top 5 도시명으로 검색
+SELECT DISTINCT city_en FROM mrtdata.business.mkt_dashboard_raw_data
+WHERE biz_type = 'T&A' AND (LOWER(city_en) LIKE '%{CITY_1}%' OR LOWER(city_en) LIKE '%{CITY_2}%' ...) LIMIT 20
+```
+
+**Step 3: 확인된 필터로 도시 × 채널별 광고비/GMV/ROAS 추출**
+
+> **광고비 분석은 반드시 도시 레벨로 수행한다.** 국가 전체 합산은 도시별 차이를 가린다.
+
+```sql
+SELECT city_en, channel,
   CASE WHEN date BETWEEN '{Q1_PRIOR_START}' AND '{Q1_PRIOR_END}' THEN 'prior'
        WHEN date BETWEEN '{Q1_CURRENT_START}' AND '{Q1_CURRENT_END}' THEN 'current' END AS period,
   SUM(cost) AS cost, SUM(gmv) AS gmv, SUM(con_margin) AS con_margin,
   SAFE_DIVIDE(SUM(gmv), NULLIF(SUM(cost), 0)) AS roas
 FROM mrtdata.business.mkt_dashboard_raw_data
-WHERE biz_type = 'T&A' AND country_en = '{COUNTRY}'
+WHERE biz_type = 'T&A'
+  AND (country_en = '{CONFIRMED_COUNTRY_EN}' OR city_en IN ({CONFIRMED_CITY_ENS}))
   AND date BETWEEN '{Q1_PRIOR_START}' AND '{Q1_CURRENT_END}'
-GROUP BY 1, 2 HAVING SUM(cost) > 0 ORDER BY cost DESC
+GROUP BY 1, 2, 3 HAVING SUM(cost) > 0 ORDER BY city_en, cost DESC
 ```
+
+**Fallback 순서 요약**:
+1. `country_en` 필터로 시도 (도시별 결과가 `city_en`에 포함됨)
+2. country_en 결과 없으면 → `city_en` IN (Top 5 도시) 필터로 재시도
+3. 둘 다 없으면 → "해당 국가의 광고비 데이터가 `mkt_dashboard_raw_data`에 없습니다. 마케팅팀에 데이터 적재를 요청하세요."로 안내. T&A 전체 기준 ROAS를 참고 수치로 제공.
+
+> **주의**: `city_en` 값의 대소문자가 불규칙할 수 있다 (예: `lisbon` vs `Porto`). `LOWER()` 비교로 매칭하되, 결과 표시는 원본 값을 사용한다.
 
 채널별 진단 프레임 적용:
 ```
@@ -285,8 +311,6 @@ GROUP BY 1, 2 HAVING SUM(cost) > 0 ORDER BY cost DESC
 UV ↓      → A. 투자 부족           B. 효율 악화
 UV 유지    →  (해당 없음)          C. 전환 품질 문제
 ```
-
-> **참고**: `mkt_dashboard_raw_data`에 해당 국가 데이터가 없을 수 있음. 없으면 T&A 전체 기준으로 진행하되 명시.
 
 #### 3-2. 체크아웃 퍼널 이탈
 
