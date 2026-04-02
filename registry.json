@@ -18,6 +18,15 @@
       "version": "1.0.0",
       "author": "doyoung",
       "tags": ["meeting", "confluence", "slack", "caret", "자동화"]
+    },
+    {
+      "name": "tna-country-analysis",
+      "path": "data-analytics/tna-country-analysis",
+      "category": "data-analytics",
+      "description": "국가별 T&A 공헌이익 종합 분석 (퍼널 6단계 × 도시→카테고리→상품 드릴다운 + 광고비 효율/취소 패턴/쿠폰 ROI)",
+      "version": "1.0.0",
+      "author": "doyoung",
+      "tags": ["T&A", "공헌이익", "퍼널분석", "BigQuery", "Confluence", "마케팅효율"]
     }
   ]
 }
