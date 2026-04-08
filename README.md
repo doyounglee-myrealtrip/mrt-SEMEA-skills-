@@ -37,6 +37,7 @@ mrt-skill info code-review
 | `engineering` | 개발팀용 스킬 (코드 리뷰, TDD 등) |
 | `data-analytics` | 데이터 분석팀용 스킬 |
 | `product` | 프로덕트팀용 스킬 |
+| `contents-creating` | 콘텐츠 제작팀용 스킬 (블로그, SNS 등) |
 | `common` | 전체 팀 공용 스킬 |
 
 ## 스킬 목록

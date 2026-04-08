@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "author": "doyoung",
+  "category": "contents-creating",
+  "tags": ["naver-blog", "GEO", "AEO", "SEO", "여행", "콘텐츠"],
+  "description": "GEO/AEO 최적화 네이버 블로그 여행 글 자동 작성. 실시간 후기 리서치 + 무료 이미지 검색 + 상품 링크 자연스럽게 녹이기.",
+  "changelog": [
+    {
+      "version": "1.0.0",
+      "date": "2026-04-07",
+      "changes": "첫 번째 배포"
+    }
+  ]
+}

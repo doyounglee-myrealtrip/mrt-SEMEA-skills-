@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-03-23",
+  "updated_at": "2026-04-07",
   "skills": [
     {
       "name": "code-review",
@@ -27,6 +27,15 @@
       "version": "1.0.0",
       "author": "doyoung",
       "tags": ["T&A", "공헌이익", "퍼널분석", "BigQuery", "Confluence", "마케팅효율"]
+    },
+    {
+      "name": "naver-blog-geo",
+      "path": "contents-creating/naver-blog-geo",
+      "category": "contents-creating",
+      "description": "GEO/AEO 최적화 네이버 블로그 여행 글 자동 작성. 실시간 후기 리서치 + 무료 이미지 검색 + 상품 링크 자연스럽게 녹이기.",
+      "version": "1.0.0",
+      "author": "doyoung",
+      "tags": ["naver-blog", "GEO", "AEO", "SEO", "여행", "콘텐츠"]
     }
   ]
 }
